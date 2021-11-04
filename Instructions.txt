@@ -1,0 +1,26 @@
+For running the angular app,
+1) please install angular cli 12.x version
+2) go to the angular project folder
+3) Type ` npm install ` in the terminal
+4) After successful installation [can take like 5- 10 mins to download and install node modules] the app is ready
+5) Type `ng serve` in the terminal.[Wait for 1-2 minutes]
+6) Open your browser and type http://localhost:4200 and hit enter
+
+Finally the app would both up.
+For the data to populate, also run the backedn server - Spring boot microservice
+
+A) Setup pgadmin in local and set password as admin
+B) Run the backend server next as detailed below
+
+	1) Open eclipse
+	2) Get inside the project folder
+	3) right click on the project and select 
+		a) Maven -> Update project..
+		b) run as -> maven build .. -> select skip unit test case check box and type `clean install` as the goal
+	4) Once all the maven dependencies are downloaded and build is successful, run the project as Java application 
+		ie a) right click on project folder
+   	   	   b) Run as -> java application -> locate the ProductApplication 
+	Now the backend would be up running 
+
+
+	
