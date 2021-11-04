@@ -8,12 +8,13 @@ export class AuthService {
   cognitoUser: any = null;
   authToken!: string;
   // userName: string;
-  cognitoUserPool: any;
+  cognitoUserPool: CognitoUserPool = null;
   awsSession: any;
   sessionTimer: any;
   refreshToken: any;
   currentUrl: any;
   signInUserSession: any =null;
+  isPasswordChanged: boolean;
 
 
   constructor(
@@ -21,12 +22,13 @@ export class AuthService {
     private readonly envService: EnvironmentService
   ) {
     this.authToken = '123';
+    // TODO: Commented out temporarily unless connected to user pool
     // this.initializeCognito();
     // this.getCurrentSession();
   }
 
   getAuthToken(): string {
-    return '123';
+    return this.authToken;
   }
 
   initializeCognito(): void {
@@ -114,13 +116,17 @@ export class AuthService {
   }
 
   canActivate(): boolean {
-    this.cognitoUser = this.cognitoUserPool.getCurrentUser();
-    if (this.cognitoUser && this.awsSession && this.awsSession.isValid()) {
-      return true;
-    } else {
-      this.router.navigateByUrl('/login');
-    }
-    return false;
+    // this.cognitoUser = this.cognitoUserPool.getCurrentUser();
+    // if (this.cognitoUser && this.awsSession && this.awsSession.isValid()) {
+    //   return true;
+    // } else {
+    //   this.router.navigateByUrl('/login');
+    // }
+    // return false;
+
+    // This is set to always true for local testingpupose
+    // Above code works once we link with userpool - uncomment it that time
+    return true;
   }
 
   signOut(): void {

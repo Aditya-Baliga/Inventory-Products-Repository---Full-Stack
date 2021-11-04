@@ -4,12 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductCreateComponent } from '../product/product-create/product-create.component';
 import { ProductDetailComponent } from '../product/product-detail/product-detail.component';
 import { ProductListComponent } from '../product/product-list/product-list.component';
+import { AuthService } from './authentication/auth.service';
+import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main.component';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: ProductListComponent
+    component: LoginComponent
   },
   {
     path: 'main',
@@ -17,11 +19,13 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
-      { // redirect to product list page untill dashboard page is created
+      {
+        // Temporary change for demo MVP.. Actually planned to have one dashboard kind of setup to show top 5 products
         path: 'home',
+        canActivate: [AuthService],
         component: ProductListComponent
       },
       {
@@ -30,12 +34,11 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        // lazy loading 
         path: 'products',
+        canActivate: [AuthService],
         loadChildren: () => import('../product/product.module').then(m => m.ProductModule)
       },
       {
-        // for now move to product list page until page not found component is not created
         path: '**',
         component: ProductListComponent
       }

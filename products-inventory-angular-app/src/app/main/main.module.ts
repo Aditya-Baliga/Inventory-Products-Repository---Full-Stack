@@ -9,12 +9,14 @@ import { MainComponent } from './main.component';
 import { AuthService } from './authentication/auth.service';
 import { UilibraryModule } from '../shared/uilibrary/uilibrary.module';
 import { ProductModule } from '../product/product.module';
+import { LoginComponent } from './login/login.component';
 
 
 
 @NgModule({
   declarations: [
-    MainComponent
+    MainComponent,
+    LoginComponent
   ],
   imports: [
     CommonModule,

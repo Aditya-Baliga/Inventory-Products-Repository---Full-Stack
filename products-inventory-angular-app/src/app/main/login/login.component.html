@@ -1,0 +1,33 @@
+<div class="container">
+    <h1> Login Page </h1>
+    <br>
+    <h5> Please enter your account details please</h5>
+
+
+    <form [formGroup]="loginForm" (ngSubmit)="authenticateUser(loginForm.value)">
+        <div class="form-group mb-2">
+            <label class="mb-1" for="userName">Username</label>
+            <input type="text" class="form-control" id="userName" placeholder="Enter username"
+                formControlName="userName">
+        </div>
+        <p-message *ngIf="loginForm.get('userName').hasError('required') && loginForm.controls['userName'].dirty"
+            severity="error" text="Username is required." styleClass="p-mr-2"></p-message>
+
+        <div class="form-group mb-2">
+            <label class="mb-1" for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password"
+                formControlName="password">
+        </div>
+
+        <p-message *ngIf="loginForm.get('password').hasError('required') && loginForm.controls['password'].dirty"
+            severity="error" text="Password is required." styleClass="p-mr-2"></p-message>
+
+        <div>
+            <p-button type="submit" label="Sign in" pTooltip="Please enter all the required data"
+                [tooltipDisabled]="loginForm.valid" [disabled]="!loginForm.valid "></p-button>
+        </div>
+
+    </form>
+
+    <p> Please hit the following url : http://localhost:4200/main/products/overview until real Cognito user pool linked. currently url authentication ie canActivate is set to true always.</p>
+</div>
