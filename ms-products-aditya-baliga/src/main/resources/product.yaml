@@ -1,0 +1,335 @@
+openapi: 3.0.1
+
+info:
+  description: "This is an inventory products microservice which can be used to perform\
+    \ CRUD operation."
+  version: "0.0.1"
+  title: "Inventory products"
+  contact:
+    email: 'adityabaliga123@gmail.com'
+  
+servers:
+  - url: 'http://localhost:5000/'
+paths:
+  '/v1/products/':
+    get:
+      tags:
+        - Product
+      summary: get all the products from the inventory
+      description: request to send all products
+      operationId: getAllProducts
+      parameters: 
+        - name: count
+          in: query
+          description: number of products in the response will be less than or equal to value provided for count
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: requested products sent successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '400':
+          description: >-
+            Malformed request (example :Required parameters are not present in the request body).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Product
+      summary: create a new product
+      description: creates a new product with given details
+      operationId: createProduct
+      requestBody:
+        description: details of the product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '201':
+          description: product created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: >-
+            Malformed request (example :Required parameters are not present in the request body).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/v1/products/category/{categoryName}':
+    get:
+      tags:
+        - Product
+      summary: get all the products from the inventory with category - categoryName
+      description: request to send all products of given categoryName
+      operationId: getAllProductsByCategory
+      parameters: 
+        - name: count
+          in: query
+          description: number of products in the response will be less than or equal to value provided for count
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: categoryName
+          in: path
+          description: category name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: requested products sent successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '400':
+          description: >-
+            Malformed request (example :Required parameters are not present in the request body).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/v1/products/{productId}':
+    get:
+      tags:
+        - Product
+      summary: get detail of a product with given ID
+      operationId: getProduct
+      parameters: 
+        - name: productId
+          in: path
+          description: Unique ID of the product
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: requested product sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: >-
+            Malformed request (example :Required parameters are not present in the request body).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Product
+      summary: update product with given ID
+      operationId: updateProduct
+      parameters: 
+        - name: productId
+          in: path
+          description: Unique ID of the product
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: details of the product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '200':
+          description: requested product sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: >-
+            Malformed request (example :Required parameters are not present in the request body).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Product
+      summary: delete product with given ID
+      operationId: deleteProduct
+      parameters: 
+        - name: productId
+          in: path
+          description: Unique ID of the product
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: product deleted successfully
+          content: {}
+        '400':
+          description: >-
+            Malformed request (example :Required parameters are not present in the request body).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Product:
+      title: Product
+      type: object
+      required:
+        - name
+        - category
+        - units
+        - description
+      properties:
+        id:
+          type: string
+          description: product id
+        name: 
+          type: string
+          description: product name
+        description:
+          type: string
+          description: description of the product
+        category:
+          type: string
+          description: category to which the product belongs to
+        units:
+          type: integer
+          format: int64
+          minimum: 1
+    Error:
+      title: Error
+      required:
+        - message
+        - origin
+        - errorCode
+      type: object
+      properties:
+        message:
+          type: string
+          description: contains the particular error message of the origin
+        origin:
+          type: string
+          description: denotes the origin of the error
+        rootCause:
+          type: string
+          description: provides the root cause of the error
+        errorCode:
+          type: string
+          description: >-
+            http status code for return value. There are common codes for all
+            methods - \'403\', denoting forbidden access, \'500\' for internal
+            server issue
+      description: Generic error object
