@@ -1,0 +1,42 @@
+<h1> New product </h1>
+<br>
+<h5> Enter the new product details</h5>
+
+
+<form [formGroup]="productCreateForm" (ngSubmit) = "createProduct()">
+    <div class="form-group mb-2">
+        <label class="mb-1" for="name">Product name  ( {{productCreateForm.get('name').value ? productCreateForm.get('name').value.length : 0}} / 256 )</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter product name" formControlName="name">
+    </div>
+    <p-message *ngIf ="productCreateForm.get('name').hasError('pattern')"  severity="error" text="HTML tags and whitespace only are not allowed in the product's name." styleClass="p-mr-2"></p-message>
+    <p-message *ngIf ="productCreateForm.get('name').hasError('required') && productCreateForm.controls['name'].dirty"  severity="error" text="A product name is required." styleClass="p-mr-2"></p-message>
+    <p-message *ngIf ="productCreateForm.get('name').hasError('maxlength')"  severity="error" text="Product name has exceeded the maximum length of 256 characters." styleClass="p-mr-2"></p-message>
+    
+    <div class="form-group mb-2">
+        <label class="mb-1" for="category">Category ( {{productCreateForm.get('category').value ? productCreateForm.get('category').value.length : 0}} / 256 )</label>
+        <input type="text" class="form-control" id="category" placeholder="Enter product category" formControlName="category">
+    </div>
+    <p-message *ngIf ="productCreateForm.get('category').hasError('pattern')"  severity="error" text="HTML tags and whitespace only are not allowed in the product's category." styleClass="p-mr-2"></p-message>
+    <p-message *ngIf ="productCreateForm.get('category').hasError('required') && productCreateForm.controls['category'].dirty"  severity="error" text="A product category is required." styleClass="p-mr-2"></p-message>
+    <p-message *ngIf ="productCreateForm.get('category').hasError('maxlength')"  severity="error" text="Product category has exceeded the maximum length of 256 characters." styleClass="p-mr-2"></p-message>
+
+    <div class="form-group mb-2">
+        <label class="mb-1" for="description">Description ( {{productCreateForm.get('description').value ? productCreateForm.get('description').value.length : 0}} / 1000 )</label>
+        <textarea class="form-control" id="description" placeholder="Enter product description" rows="3" formControlName="description"></textarea>
+    </div>
+    <p-message *ngIf ="productCreateForm.get('description').hasError('pattern')"  severity="error" text="HTML tags and whitespace only are not allowed in the product's description." styleClass="p-mr-2"></p-message>
+    <p-message *ngIf ="productCreateForm.get('description').hasError('required') && productCreateForm.controls['description'].dirty"  severity="error" text="A product description is required." styleClass="p-mr-2"></p-message>
+    <p-message *ngIf ="productCreateForm.get('description').hasError('maxlength')"  severity="error" text="Product description has exceeded the maximum length of 1000 characters." styleClass="p-mr-2"></p-message>
+    
+    <div class="form-group mb-2">
+        <label class="mb-1" for="units">Units</label>
+        <input type="number" min="0" value="1" class="form-control" id="units" placeholder="Enter product units" formControlName="units">
+    </div>
+    <p-message *ngIf ="productCreateForm.get('units').hasError('required') && productCreateForm.controls['units'].dirty || productCreateForm.get('units').hasError('pattern')"  severity="error" text="Product units is required and non integral values not allowed in product's units." styleClass="p-mr-2"></p-message>
+
+    <br>
+    <div>
+        <p-button icon="pi pi-check" type="submit" label="Create product" pTooltip="Please enter all the required data" [tooltipDisabled]="productCreateForm.valid" [disabled]= "!productCreateForm.valid " ></p-button>
+    </div>
+
+</form>

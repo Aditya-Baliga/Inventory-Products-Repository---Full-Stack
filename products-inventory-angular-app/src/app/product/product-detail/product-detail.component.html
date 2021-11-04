@@ -1,0 +1,73 @@
+<h1> Product details </h1>
+
+<p-message *ngIf="!product" severity="info" text="Getting the product to be updated" styleClass="p-mr-2"></p-message>
+<br>
+<div *ngIf="product">
+    <p-message severity="info" text="Please click on the edit button to update the product details" styleClass="p-mb-4"></p-message> <br> <br>
+    <p-button [disabled]="editDataMode" icon="pi pi-pencil" (click)="enableEditDataMode()" label="Edit"></p-button>
+    <br>
+    <form [formGroup]="productUpdateForm" (ngSubmit)="updateProduct()">
+        <div class="form-group mb-2">
+            <label class="mb-1" for="name">Product name ( {{productUpdateForm.get('name').value ?
+                productUpdateForm.get('name').value.length : 0}} / 256 )</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter product name" formControlName="name">
+        </div>
+        <p-message *ngIf="productUpdateForm.get('name').hasError('pattern')" severity="error"
+            text="HTML tags and whitespace only are not allowed in the product's name." styleClass="p-mr-2"></p-message>
+        <p-message
+            *ngIf="productUpdateForm.get('name').hasError('required') && productUpdateForm.controls['name'].dirty"
+            severity="error" text="A product name is required." styleClass="p-mr-2"></p-message>
+        <p-message *ngIf="productUpdateForm.get('name').hasError('maxlength')" severity="error"
+            text="Product name has exceeded the maximum length of 256 characters." styleClass="p-mr-2"></p-message>
+
+        <div class="form-group mb-2">
+            <label class="mb-1" for="category">Category ( {{productUpdateForm.get('category').value ?
+                productUpdateForm.get('category').value.length : 0}} / 256 )</label>
+            <input type="text" class="form-control" id="category" placeholder="Enter product category"
+                formControlName="category">
+        </div>
+        <p-message *ngIf="productUpdateForm.get('category').hasError('pattern')" severity="error"
+            text="HTML tags and whitespace only are not allowed in the product's category." styleClass="p-mr-2">
+        </p-message>
+        <p-message
+            *ngIf="productUpdateForm.get('category').hasError('required') && productUpdateForm.controls['category'].dirty"
+            severity="error" text="A product category is required." styleClass="p-mr-2"></p-message>
+        <p-message *ngIf="productUpdateForm.get('category').hasError('maxlength')" severity="error"
+            text="Product category has exceeded the maximum length of 256 characters." styleClass="p-mr-2"></p-message>
+
+        <div class="form-group mb-2">
+            <label class="mb-1" for="description">Description ( {{productUpdateForm.get('description').value ?
+                productUpdateForm.get('description').value.length : 0}} / 1000 )</label>
+            <textarea class="form-control" id="description" placeholder="Enter product description" rows="3"
+                formControlName="description"></textarea>
+        </div>
+        <p-message *ngIf="productUpdateForm.get('description').hasError('pattern')" severity="error"
+            text="HTML tags and whitespace only are not allowed in the product's description." styleClass="p-mr-2">
+        </p-message>
+        <p-message
+            *ngIf="productUpdateForm.get('description').hasError('required') && productUpdateForm.controls['description'].dirty"
+            severity="error" text="A product description is required." styleClass="p-mr-2"></p-message>
+        <p-message *ngIf="productUpdateForm.get('description').hasError('maxlength')" severity="error"
+            text="Product description has exceeded the maximum length of 1000 characters." styleClass="p-mr-2">
+        </p-message>
+
+        <div class="form-group mb-2">
+            <label class="mb-1" for="units">Units</label>
+            <input type="number" min="0" value="1" class="form-control" id="units" placeholder="Enter product units"
+                formControlName="units">
+        </div>
+        <p-message
+            *ngIf="productUpdateForm.get('units').hasError('required') && productUpdateForm.controls['units'].dirty || productUpdateForm.get('units').hasError('pattern')"
+            severity="error" text="Product units is required and non integral values not allowed in product's units."
+            styleClass="p-mr-2"></p-message>
+
+        <br>
+        <div *ngIf="editDataMode">
+            <p-button styleClass="mr-2" icon="pi pi-check" type="submit" label="Update product" pTooltip="Please enter all the required data"
+                [tooltipDisabled]="productUpdateForm.valid" [disabled]="!productUpdateForm.valid "></p-button>
+            <p-button styleClass="p-button-secondary" type="button" icon="pi pi-times" label="Cancel changes"  (click)="cancelEditDataMode()"></p-button>
+        </div>
+
+    </form>
+
+</div>
