@@ -14,8 +14,6 @@ export class AuthService {
   refreshToken: any;
   currentUrl: any;
   signInUserSession: any =null;
-  isPasswordChanged: boolean;
-
 
   constructor(
     private readonly router: Router,
@@ -47,6 +45,7 @@ export class AuthService {
   }
 
   setSessionTimer(session: any): void {
+    // here we prematurely call 2 minutes prior to actual expiry so that user gets the new tokens before current token gets expired
     const expirationTime = session.idToken.payload.exp - Number(String(Date.now()).slice(0, 10)) - 120;
 
     if (expirationTime > 0) {

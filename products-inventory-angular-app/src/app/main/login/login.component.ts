@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { MessageService } from 'primeng/api';
 
-import { EnvironmentService } from 'src/app/shared/environments/environment.service';
 import { AuthService } from '../authentication/auth.service';
 
 @Component({
@@ -17,8 +15,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router,
-    private readonly envService: EnvironmentService,
     private readonly messageService: MessageService
   ) { }
 
@@ -47,8 +43,6 @@ export class LoginComponent implements OnInit {
         thisRef.authService.awsSession = session;
         thisRef.authService.signInUserSession = thisRef.authService.cognitoUser.signInUserSession;
         thisRef.authService.loadCurrentSession(session);
-        thisRef.authService.isPasswordChanged = false;
-
       },
 
       onFailure: function (): void {
