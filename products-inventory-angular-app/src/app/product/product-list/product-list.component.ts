@@ -14,7 +14,6 @@ import { ProductService } from '../product-shared/product.service';
 })
 export class ProductListComponent implements OnInit {
   products: Product[];
-
   selectedProducts: Product[];
   loading: boolean = true;
 
@@ -91,13 +90,29 @@ export class ProductListComponent implements OnInit {
   //   });
 
   //   if(count == reqLength) {
-     
+
   //     if(!failCount) {
   //       this.messageService.add({ severity: 'success', summary: 'Product deletion successful', detail: `Product ${count} created successfully` });
   //     }
   //     this.getAllProducts();
   //   }
   // }
+
+  showDeleteProductConfirm(productName: string) {
+    this.messageService.clear();
+    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: `Are you sure you want to delete the product ${productName}  ?`, detail: 'Confirm to proceed with delete' });
+  }
+
+  onConfirm(productId: string, productName: string): void {
+    this.messageService.clear('c');
+    this.deleteProduct(productId, productName);
+
+  }
+
+  onReject(): void {
+    this.messageService.clear('c');
+
+  }
 
 
 }
