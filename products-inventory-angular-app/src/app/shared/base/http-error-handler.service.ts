@@ -18,9 +18,13 @@ export class HttpErrorHandler {
 
   handleError<T>(serviceName = '', operationErrorMessage = 'operationErrorMessage') {
     return (errorResponse: HttpErrorResponse): Observable<T> => {
-      const errorMessage = (errorResponse.error.message) ? errorResponse.error.message : '';
+      let errorMessage = (errorResponse.error.message) ? errorResponse.error.message : '';
       const errorCode: string = errorResponse.error.errorCode;
       const rootCause: string = (errorResponse.error.rootCause) ? errorResponse.error.rootCause : '';
+
+      if(errorMessage=='') {
+        errorMessage = (errorResponse.message) ? errorResponse.message : '';
+      }
 
       this.messageService.add({
         severity: 'error', summary: `Error in Server`, detail: (errorCode == '500') ? `${serviceName} ${operationErrorMessage} ` :

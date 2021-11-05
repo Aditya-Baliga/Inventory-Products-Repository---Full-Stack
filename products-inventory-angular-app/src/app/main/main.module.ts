@@ -26,6 +26,6 @@ import { LoginComponent } from './login/login.component';
     UilibraryModule,
     ProductModule
   ],
-  providers: [AuthService, MessageService]
+  providers: [AuthService]
 })
 export class MainModule { }

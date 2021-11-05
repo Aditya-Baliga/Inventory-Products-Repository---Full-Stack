@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +25,7 @@ import { AuthInterceptor } from './shared/auth-interceptor/auth.interceptor';
     AppComponent
   ],
   providers: [
-    BaseHttpService, HttpErrorHandler,
+    BaseHttpService, HttpErrorHandler, MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
