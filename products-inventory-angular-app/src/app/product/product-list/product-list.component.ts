@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Observable } from 'rxjs';
 
 import { Product } from '../product-shared/product.model';
 import { ProductService } from '../product-shared/product.service';
@@ -21,15 +20,14 @@ export class ProductListComponent implements OnInit {
 
   constructor(private productService: ProductService,
     private router: Router,
-    private readonly messageService: MessageService,) {
+    private readonly messageService: MessageService,
+    private readonly confirmationService: ConfirmationService) {
     this.productService.onUpdateProductList().subscribe((val) => {
-      console.log('hello world', val);
       this.getAllProducts();
     })
   }
 
   ngOnInit() {
-
     this.getAllProducts();
   }
 
@@ -98,21 +96,18 @@ export class ProductListComponent implements OnInit {
   //   }
   // }
 
-  showDeleteProductConfirm(productName: string) {
-    this.messageService.clear();
-    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: `Are you sure you want to delete the product ${productName}  ?`, detail: 'Confirm to proceed with delete' });
+  confirmProductDeletion(productId: string, productName: string): void {
+    this.confirmationService.confirm({
+      message: `Are you sure you want to delete the product <b>${productName}</b>  ?`,
+      header: 'Confirm deletion',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.deleteProduct(productId, productName);
+      }
+    });
   }
 
-  onConfirm(productId: string, productName: string): void {
-    this.messageService.clear('c');
-    this.deleteProduct(productId, productName);
 
-  }
-
-  onReject(): void {
-    this.messageService.clear('c');
-
-  }
 
 
 }
