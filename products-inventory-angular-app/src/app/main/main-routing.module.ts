@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ProductCreateComponent } from '../product/product-create/product-create.component';
-import { ProductDetailComponent } from '../product/product-detail/product-detail.component';
 import { ProductListComponent } from '../product/product-list/product-list.component';
 import { AuthService } from './authentication/auth.service';
 import { LoginComponent } from './login/login.component';
@@ -19,18 +17,17 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'products',
         pathMatch: 'full'
       },
       {
-        // Temporary change for demo MVP.. Actually planned to have one dashboard kind of setup to show top 5 products
         path: 'home',
-        canActivate: [AuthService],
-        component: ProductListComponent
+        redirectTo: 'products',
+        pathMatch: 'full'
       },
       {
         path: 'dashboard',
-        redirectTo: 'home',
+        redirectTo: 'products',
         pathMatch: 'full'
       },
       {
