@@ -37,6 +37,7 @@ const routes: Routes = [
       },
       {
         path: '**',
+        canActivate: [AuthService],
         component: ProductListComponent
       }
     ]

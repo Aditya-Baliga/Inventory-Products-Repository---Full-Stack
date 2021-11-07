@@ -13,16 +13,18 @@ export class AuthService {
   sessionTimer: any;
   refreshToken: any;
   currentUrl: any;
-  signInUserSession: any =null;
+  isSignedIn = false;
+  signInUserSession: any = null;
 
   constructor(
     private readonly router: Router,
     private readonly envService: EnvironmentService
   ) {
     this.authToken = '123';
+    this.currentUrl = window.location.href;
     // TODO: Commented out temporarily unless connected to user pool
-    // this.initializeCognito();
-    // this.getCurrentSession();
+    this.initializeCognito();
+    this.getCurrentSession();
   }
 
   getAuthToken(): string {
@@ -41,6 +43,9 @@ export class AuthService {
   checkIDToken(idToken: any): void {
     if (idToken) {
       this.authToken = idToken;
+      this.isSignedIn = true;
+    } else {
+      this.isSignedIn = false;
     }
   }
 
@@ -58,12 +63,10 @@ export class AuthService {
   }
 
   loadCurrentSession(session: any, isSessionRefreshed = false): void {
-
     if (session) {
       const idToken = session.idToken.jwtToken;
       this.checkIDToken(idToken);
       this.refreshToken = session.getRefreshToken();
-      // some more code
 
       if (!isSessionRefreshed) {
         this.navigate();
@@ -84,7 +87,7 @@ export class AuthService {
     this.cognitoUser.refreshSession(this.refreshToken, (error: any, session: any) => {
       if (error) {
         this.signOut();
-      } else if (session) {
+      } else if (session && this.isSignedIn) {
         this.awsSession = session;
         this.loadCurrentSession(session, true);
       }
@@ -101,7 +104,7 @@ export class AuthService {
 
   loadExistingSession(): void {
     const thisRef = this;
-    this.cognitoUser.getSession((error: any, session:any) => {
+    this.cognitoUser.getSession((error: any, session: any) => {
       thisRef.awsSession = session;
       if (error) {
         thisRef.signOut();
@@ -115,27 +118,27 @@ export class AuthService {
   }
 
   canActivate(): boolean {
-    // this.cognitoUser = this.cognitoUserPool.getCurrentUser();
-    // if (this.cognitoUser && this.awsSession && this.awsSession.isValid()) {
-    //   return true;
-    // } else {
-    //   this.router.navigateByUrl('/login');
-    // }
-    // return false;
-
-    // This is set to always true for local testingpupose
-    // Above code works once we link with userpool - uncomment it that time
-    return true;
+    this.cognitoUser = this.cognitoUserPool.getCurrentUser();
+    if (this.cognitoUser && this.awsSession && this.awsSession.isValid()) {
+      this.isSignedIn = true;
+      return true;
+    } else {
+      this.isSignedIn = false;
+      this.router.navigateByUrl('/login');
+    }
+    return false;
   }
 
   signOut(): void {
     clearInterval(this.sessionTimer);
     this.cognitoUser.signInUserSession = this.signInUserSession;
-    this.cognitoUser.globalSignout(
+    this.cognitoUser = this.cognitoUserPool.getCurrentUser();
+    this.cognitoUser.signOut(
       {
         onFailure: (error: any) => console.log('Logout error', error),
         onSuccess: (success: any) => console.log('Logout success', success)
       });
+    this.isSignedIn = false;
     this.router.navigateByUrl('/login');
 
   }

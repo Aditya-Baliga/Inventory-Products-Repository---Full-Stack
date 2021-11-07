@@ -47,6 +47,12 @@ export class LoginComponent implements OnInit {
 
       onFailure: function (): void {
         thisRef.messageService.add({ severity: 'error', summary: 'Authentication Failed', detail: `Please retry with the right username and password` });
+      },
+
+      newPasswordRequired: function (userAttributes: any) {
+        delete userAttributes.email_verified;
+        delete userAttributes.phone_number_verified;
+        thisRef.authService.cognitoUser.completeNewPasswordChallenge(authenticationData.password, userAttributes, this);
       }
     }
 
