@@ -96,8 +96,8 @@ public class ProductServiceImpl implements ProductService {
 
 			return products;
 		} catch (Exception e) {
-			throw new GenericException("Product service impl", e.getMessage(),
-					"Failed to get All Products : ", "481216", e);
+			throw new GenericException("Product service impl", e.getMessage(), "Failed to get All Products : ",
+					"481216", e);
 		}
 	}
 
@@ -120,8 +120,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product getProduct(UUID productId) {
-		ProductEntity productEntity = productServiceHelper.getProductEntity(productId);
-		return customMapper.productEntityToProduct(productEntity);
+		try {
+			ProductEntity productEntity = productServiceHelper.getProductEntity(productId);
+			return customMapper.productEntityToProduct(productEntity);
+		} catch (Exception e) {
+			throw new GenericException("Product service impl", e.getMessage(), "Failed to get Product : " + productId,
+					"987654", e);
+		}
 	}
 
 	@Override

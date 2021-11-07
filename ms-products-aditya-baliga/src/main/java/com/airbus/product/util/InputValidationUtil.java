@@ -42,15 +42,15 @@ public final class InputValidationUtil {
 	public static String validateProductProperties(final Product product) {
 		StringBuilder validationResult = new StringBuilder();
 		if (!isValidString(product.getName(), 256, true)) {
-			validationResult.append("\n length of name of product should be less than 256 characters");
+			validationResult.append("\n length of name of product should be greater than or equal to 1 and less than or equal to 256 characters");
 		}
 
 		if (!isValidString(product.getDescription(), 1000, true)) {
-			validationResult.append("\n length of name of product should be less than 1000 characters");
+			validationResult.append("\n length of description of product should be greater than or equal to 1 and less than or equal to 1000 characters");
 		}
 		
 		if (!isValidString(product.getCategory(), 256, true)) {
-			validationResult.append("\n length of category of product should be less than 256 characters");
+			validationResult.append("\n length of category of product should be greater than or equal to 1 and less than or equal to 256 characters");
 		}
 
 		if (product.getUnits() == null || product.getUnits() <= -1) {

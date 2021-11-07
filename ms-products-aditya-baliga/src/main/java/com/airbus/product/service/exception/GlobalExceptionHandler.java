@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.airbus.product.model.Error;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler  {
 
 	@ExceptionHandler(IllegalArgumentException.class)
 	public final ResponseEntity<CustomExceptionResponse> handleException(final IllegalArgumentException ex) {
@@ -66,12 +66,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
-	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Error> handleException(final Exception ex) {
-		Error error = new Error();
-		error.setMessage(ex.getMessage());
-
-		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+//	@ExceptionHandler(Exception.class)
+//	public final ResponseEntity<Error> handleException(final Exception ex) {
+//		Error error = new Error();
+//		error.setMessage(ex.getMessage());
+//		System.out.println(ex);
+//		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
 	
 }
