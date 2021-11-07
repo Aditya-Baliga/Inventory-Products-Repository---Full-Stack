@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.airbus.product.model.Product;
 import com.airbus.product.service.ProductService;
+import com.airbus.product.service.exception.GenericException;
 import com.airbus.product.service.exception.InputValidationException;
+import com.airbus.product.service.exception.UpdateResourceException;
 import com.airbus.product.util.InputValidationUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,8 +42,7 @@ public class ProductApiController implements V1Api {
 	@Override
 	public ResponseEntity<Product> createProduct(
 			@ApiParam(value = "details of the product", required = true) @Valid @RequestBody Product product) {
-		
-		log.info("Request received to createProduct : "+ product);
+		log.info("Request received to createProduct : " + product);
 		String validationResult = InputValidationUtil.validateProductCreateRequest(product);
 
 		if (StringUtils.isNotEmpty(validationResult)) {
@@ -50,17 +51,17 @@ public class ProductApiController implements V1Api {
 					validationResult);
 		}
 		Product createdProduct = service.createProduct(product);
-		
-		log.info("Product entry added successfully : "+ product);
+
+		log.info("Product entry added successfully : " + product);
 		return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteProduct(
 			@ApiParam(value = "Unique ID of the product", required = true) @PathVariable("productId") UUID productId) {
-		log.info("Request received to deleteProduct : "+ productId);
+		log.info("Request received to deleteProduct : " + productId);
 		service.deleteProduct(productId);
-		log.info("Product entry deleted successfully : "+ productId);
+		log.info("Product entry deleted successfully : " + productId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -74,7 +75,7 @@ public class ProductApiController implements V1Api {
 					validationResult);
 		}
 		List<Product> allProducts = service.getAllProducts(count);
-		log.info("All products fetched successfully : products are :  "+ allProducts.toString());
+		log.info("All products fetched successfully : products are :  " + allProducts.toString());
 		return new ResponseEntity<>(allProducts, HttpStatus.OK);
 	}
 
@@ -82,7 +83,7 @@ public class ProductApiController implements V1Api {
 	public ResponseEntity<List<Product>> getAllProductsByCategory(
 			@ApiParam(value = "category name", required = true) @PathVariable("categoryName") String categoryName,
 			@Min(1) @ApiParam(value = "number of products in the response will be less than or equal to value provided for count", allowableValues = "") @Valid @RequestParam(value = "count", required = false) Integer count) {
-		log.info("Request received to getAllProductsByCategory : category name is : "+ categoryName);
+		log.info("Request received to getAllProductsByCategory : category name is : " + categoryName);
 		String validationResult = InputValidationUtil.validateCount(count)
 				+ InputValidationUtil.validateCategoryName(categoryName);
 		if (StringUtils.isNotEmpty(validationResult)) {
@@ -91,20 +92,21 @@ public class ProductApiController implements V1Api {
 					validationResult);
 		}
 		List<Product> allProductsOfGivenCategory = service.getAllProductsByCategory(categoryName, count);
-		log.info("All productsByCategory fetched successfully : category name is: "+ categoryName+"prodducts are : "+ allProductsOfGivenCategory.toString());
+		log.info("All productsByCategory fetched successfully : category name is: " + categoryName + "prodducts are : "
+				+ allProductsOfGivenCategory.toString());
 		return new ResponseEntity<>(allProductsOfGivenCategory, HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Product> getProduct(
 			@ApiParam(value = "Unique ID of the product", required = true) @PathVariable("productId") UUID productId) {
-		log.info("Request received to getProduct : "+ productId);
+		log.info("Request received to getProduct : " + productId);
 		Product product = service.getProduct(productId);
 		if (product != null) {
-			log.info("Product fetched successfully : "+ productId+"product is : "+ product.toString());
+			log.info("Product fetched successfully : " + productId + "product is : " + product.toString());
 			return new ResponseEntity<>(product, HttpStatus.OK);
 		}
-		log.info("Product getProduct not found : "+ productId);
+		log.info("Product getProduct not found : " + productId);
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
@@ -112,7 +114,8 @@ public class ProductApiController implements V1Api {
 	public ResponseEntity<Product> updateProduct(
 			@ApiParam(value = "details of the product", required = true) @Valid @RequestBody Product product,
 			@ApiParam(value = "Unique ID of the product", required = true) @PathVariable("productId") UUID productId) {
-		log.info("Request received to updateProduct : product id is: "+ productId+ " product is : "+ product);
+
+		log.info("Request received to updateProduct : product id is: " + productId + " product is : " + product);
 		String validationResult = InputValidationUtil.validateProductUpdateRequest(product);
 		if (StringUtils.isNotEmpty(validationResult)) {
 			log.error("Failed to updateProduct : " + validationResult);
@@ -121,11 +124,10 @@ public class ProductApiController implements V1Api {
 		}
 		Product updatedProduct = service.updateProduct(productId, product);
 		if (updatedProduct != null) {
-			log.info("Product updated successfully : "+ productId+ " product is : "+ product.toString());
+			log.info("Product updated successfully : " + productId + " product is : " + product.toString());
 			return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
 		}
-		log.info("Product updateProduct not found : "+ productId);
+		log.info("Product updateProduct not found : " + productId);
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-
 }

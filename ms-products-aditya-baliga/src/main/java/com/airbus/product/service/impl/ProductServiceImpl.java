@@ -9,11 +9,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.airbus.product.api.ProductApiController;
 import com.airbus.product.entity.ProductEntity;
 import com.airbus.product.model.Product;
 import com.airbus.product.service.ProductService;
@@ -31,6 +34,7 @@ import com.airbus.product.util.RepositoryUtil;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+	Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 	@Autowired
 	private ProductRepository productRepository;
 
@@ -67,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
 
 			return products;
 		} catch (Exception e) {
+			log.error("Exception caught in getAllProductsByCategory: category is "+categoryName + " exception is : "+e.getMessage()+ " errorCode : 36912" );
 			throw new GenericException("Product service impl", e.getMessage(),
 					"Failed to get All Products By Category : " + categoryName, "36912", e);
 		}
@@ -96,6 +101,7 @@ public class ProductServiceImpl implements ProductService {
 
 			return products;
 		} catch (Exception e) {
+			log.error("Exception caught in getAllProducts. Exception is : "+e.getMessage()+ " errorCode : 481216" );
 			throw new GenericException("Product service impl", e.getMessage(), "Failed to get All Products : ",
 					"481216", e);
 		}
@@ -111,8 +117,10 @@ public class ProductServiceImpl implements ProductService {
 
 			return customMapper.productEntityToProduct(productEntity);
 		} catch (DuplicateResourceException | CreateResourceException e) {
+			log.error("Exception caught in createProduct. Exception is : "+e.getMessage()+ " Product creation failed." );
 			throw new CreateResourceException(e.getMessage(), "SERVER_ERROR", "Product creation failed", e);
 		} catch (Exception e) {
+			log.error("Exception caught in createProduct. Exception is : "+e.getMessage()+ " 45678." );
 			throw new GenericException("Product service impl", e.getMessage(),
 					"Failed to create product with id : " + product.getId(), "45678", e);
 		}
@@ -124,6 +132,7 @@ public class ProductServiceImpl implements ProductService {
 			ProductEntity productEntity = productServiceHelper.getProductEntity(productId);
 			return customMapper.productEntityToProduct(productEntity);
 		} catch (Exception e) {
+			log.error("Exception caught in getProduct. Exception is : "+e.getMessage()+ " 987654." );
 			throw new GenericException("Product service impl", e.getMessage(), "Failed to get Product : " + productId,
 					"987654", e);
 		}
@@ -137,6 +146,7 @@ public class ProductServiceImpl implements ProductService {
 			if (!oProductEntity.isPresent()) {
 				ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException(
 						"Product with given id not found");
+				log.error("Exception caught in updateProduct. Exception is :  Product with given id not found." );
 				throw new UpdateResourceException("Failed to update product. Product with given ID not found",
 						"Product not found", "Product wih given id not present ", resourceNotFoundException);
 			}
@@ -147,8 +157,10 @@ public class ProductServiceImpl implements ProductService {
 			return customMapper.productEntityToProduct(productRepository.save(productEntity));
 
 		} catch (UpdateResourceException | IllegalArgumentException e) {
-			throw new UpdateResourceException(e.getMessage(), "SERVER_ERROR", "Product deletion failed", e);
+			log.error("Exception caught in updateProduct. Exception is : "+e.getMessage()+ " Product deletion failed." );
+			throw new UpdateResourceException(e.getMessage(), "SERVER_ERROR", "Product updation failed", e);
 		} catch (Exception e) {
+			log.error("Exception caught in updateProduct. Exception is : "+e.getMessage()+ " 12345." );
 			throw new GenericException("Product service impl", e.getMessage(),
 					"Failed to update product with id : " + productId, "12345", e);
 		}
@@ -161,6 +173,7 @@ public class ProductServiceImpl implements ProductService {
 			if (!oProductEntity.isPresent()) {
 				ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException(
 						"Product with given id not found");
+				log.error("Exception caught in deleteProduct. Exception is :  Product with given id not found." );
 				throw new DeleteResourceException("Failed to delete product. Product with given ID not found",
 						"Product not found", "Product wih given id not present ", resourceNotFoundException);
 			}
@@ -169,8 +182,10 @@ public class ProductServiceImpl implements ProductService {
 			productRepository.delete(productEntity);
 
 		} catch (DeleteResourceException | IllegalArgumentException e) {
+			log.error("Exception caught in deleteProduct. Exception is : "+e.getMessage()+ " Product deletion failed." );
 			throw new DeleteResourceException(e.getMessage(), "SERVER_ERROR", "Product deletion failed", e);
 		} catch (Exception e) {
+			log.error("Exception caught in deleteProduct. Exception is : "+e.getMessage()+ " 24686." );
 			throw new GenericException("Product service impl", e.getMessage(),
 					"Failed to delete product with id : " + productId, "24686", e);
 		}
