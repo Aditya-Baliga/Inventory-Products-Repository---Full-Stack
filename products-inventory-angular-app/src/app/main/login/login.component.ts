@@ -12,6 +12,7 @@ import { AuthService } from '../authentication/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  isSignInFailed = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -40,12 +41,15 @@ export class LoginComponent implements OnInit {
     const thisRef = this;
     const authenticateUserCallbacks = {
       onSuccess: function (session: any): void {
+        thisRef.isSignInFailed = false;
         thisRef.authService.awsSession = session;
         thisRef.authService.signInUserSession = thisRef.authService.cognitoUser.signInUserSession;
         thisRef.authService.loadCurrentSession(session);
       },
 
       onFailure: function (): void {
+        console.log('Error adi')
+        thisRef.isSignInFailed = true;
         thisRef.messageService.add({ severity: 'error', summary: 'Authentication Failed', detail: `Please retry with the right username and password` });
       },
 

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <a [routerLink]="['/']" class="navbar-brand">Airbus Products Inventory</a>
         <div *ngIf="isSignedIn">
-            <p-button label="Signout" (click)="signOut()"></p-button>
+            <p-button label="Logout" (click)="signOut()"></p-button>
         </div>
     </div>
 </nav>

@@ -2,8 +2,9 @@
 <div class="container">
     <h1> Login Page </h1>
     <br>
-    <h5> Please enter your account details please</h5>
-
+    <h5> Please enter your account details</h5>
+    <p-message *ngIf="isSignInFailed"
+            severity="error" text="Incorrect credentials entered. Please login with correct account details" styleClass="p-mr-2"></p-message>
 
     <form [formGroup]="loginForm" (ngSubmit)="authenticateUser(loginForm.value)">
         <div class="form-group mb-2">
@@ -29,7 +30,5 @@
         </div>
 
     </form>
-
-    <p> Please hit the following url : http://localhost:4200/main/products/overview until real Cognito user pool linked.
-        currently url authentication ie canActivate is set to true always.</p>
+    <p-toast></p-toast>
 </div>
