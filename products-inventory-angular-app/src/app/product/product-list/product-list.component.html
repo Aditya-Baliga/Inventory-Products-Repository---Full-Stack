@@ -40,7 +40,7 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th>
-                <input pInputText type="text" (input)="dt.filter($any($event.target).value, 'name', 'startsWith')"
+                <input pInputText type="text" (input)="dt.filter($any($event.target).value, 'name', 'contains')"
                     placeholder="Search by name" class="p-column-filter">
             </th>
             <th>
