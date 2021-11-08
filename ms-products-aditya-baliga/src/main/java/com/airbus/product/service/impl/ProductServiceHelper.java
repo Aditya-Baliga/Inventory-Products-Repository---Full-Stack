@@ -39,7 +39,7 @@ public class ProductServiceHelper {
 				return;
 			}
 			throw new DuplicateResourceException(
-					"Duplicate Error , Product with name : " + product.getName() + " already exists!");
+					"Duplicate Error [Case insensitive], Product with name : " + productEntity.getName() + " already exists!");
 		}
 	}
 }

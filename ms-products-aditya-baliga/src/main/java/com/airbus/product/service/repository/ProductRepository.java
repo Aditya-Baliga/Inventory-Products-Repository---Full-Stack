@@ -15,7 +15,7 @@ import com.airbus.product.entity.ProductEntity;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, UUID>{
 	
-		
+	@Query("SELECT new com.airbus.product.entity.ProductEntity(p.id,p.category,p.name, p.description, p.units) FROM ProductEntity p WHERE UPPER(p.name) = UPPER(:name)")
 	ProductEntity findByName(@Param("name")String name);
 	
 	Page<ProductEntity> findAllByCategory(@Param("category") String category, Pageable page);
