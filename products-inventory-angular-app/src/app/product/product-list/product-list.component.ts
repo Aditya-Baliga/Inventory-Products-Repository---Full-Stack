@@ -16,7 +16,7 @@ export class ProductListComponent implements OnInit {
   selectedProducts: Product[];
   loading: boolean = true;
 
-  @ViewChild('dt') table: Table;
+  @ViewChild('dt') table: Table; 
 
   constructor(private productService: ProductService,
     private router: Router,
@@ -37,7 +37,6 @@ export class ProductListComponent implements OnInit {
       this.loading = false;
     },
       () => {
-        console.log('failed');
         this.products = [];
         this.loading = false;
       });

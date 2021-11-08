@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import {MessageService} from 'primeng/api';
 
 import { ValidationPatternService } from 'src/app/shared/validation/validation-pattern.service';
-import { Product, ProductRequest } from '../product-shared/product.model';
 import { ProductService } from '../product-shared/product.service';
 
 @Component({
@@ -75,7 +74,10 @@ export class ProductCreateComponent implements OnInit {
         this.messageService.add({severity:'success', summary:'Product creation successful', detail:`Product ${productName} created successfully`});
         if(this.router.url == 'main/products/overview') {
           this.productService.updateProductListView();
+        } else {
+          this.productService.updateProductListView();
         }
+        
       },
       (err) => {
         this.messageService.add({severity:'error', summary:'Product creation failed', detail:`Failed to create product ${productName}`});

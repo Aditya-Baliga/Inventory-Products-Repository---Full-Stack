@@ -48,7 +48,6 @@ export class LoginComponent implements OnInit {
       },
 
       onFailure: function (): void {
-        console.log('Error adi')
         thisRef.isSignInFailed = true;
         thisRef.messageService.add({ severity: 'error', summary: 'Authentication Failed', detail: `Please retry with the right username and password` });
       },
